@@ -4,15 +4,24 @@
 # .DS_Store files
 .DS_Store
 
-# Archives
+# Archives files
 *.tar
 *.zip
 
-# Packages
+# macOS Packages
 *.pkg
 
-# Python
+# Python files
 *.pyc
+
+# Terraform directory
+.terraform/
+
+# Terraform files
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.tfvars
 
 # VS Code
 .vscode/
