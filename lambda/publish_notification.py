@@ -19,11 +19,15 @@ from utils import *
 # Environmental Variables
 
 try:
-    AUTH_KEY = os.environ['auth_key']
     DEFAULT_MESSAGE = os.environ['default_message']
     TOPIC_ARN = os.environ['topic_arn']
 except KeyError as e:
-    print("Warning: Environmental variable '" + str(e) + "' not defined")
+    env_var_error = generate_api_response(
+        500,
+        "ERROR: Environmental variable " + str(e) + " not defined"
+    )
+else:
+    env_var_error = None
 
 
 # Client Objects
@@ -35,6 +39,9 @@ sns = boto3.client('sns', region_name='us-east-1')
 
 def lambda_handler(event, context):
     """Handler function for AWS Lambda."""
+    if(env_var_error):
+        return env_var_error
+        
     # Check for required fields in request
     try:
         auth_key = event['auth_key']

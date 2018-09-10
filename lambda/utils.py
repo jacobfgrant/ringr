@@ -8,6 +8,7 @@ Updated: 09/09/18
 """
 
 
+import os
 import re
 
 
@@ -15,8 +16,11 @@ import re
 
 def auth_function(key):
     """Check if authorization key is valid."""
-    if(key == AUTH_KEY):
-        return True
+    try:
+        if(key == os.environ['auth_key']):
+            return True
+    except:
+        pass
     else:
         return False
 
@@ -26,7 +30,7 @@ def generate_api_response(response_code, body):
     api_response = {
         "isBase64Encoded": False,
         "statusCode": response_code,
-        "headers": { "Content-Type": "application/json"},
+        "headers": {"Content-Type": "application/json"},
         "body": body
     }
     return api_response
