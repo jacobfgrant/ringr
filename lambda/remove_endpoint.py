@@ -6,15 +6,18 @@ topic is handled downstream by a separate function.
 
 Author:  Jacob F. Grant
 Created: 08/30/18
-Updated: 09/07/18
+Updated: 09/09/18
 """
 
 
 import os
-
 import boto3
 from botocore.exceptions import ClientError
 
+from utils import *
+
+
+# Environmental Variables
 
 try:
     AUTH_KEY = os.environ['auth_key']
@@ -24,46 +27,10 @@ except KeyError as e:
     print("Warning: Environmental variable '" + str(e) + "' not defined")
 
 
+# Client Objects
+
 dynamodb = boto3.client('dynamodb')
 sns = boto3.client('sns', region_name='us-east-1')
-
-
-# General Functions
-
-def auth_function(key):
-    """Check if authorization key is valid."""
-    if(key == AUTH_KEY):
-        return True
-    else:
-        return False
-
-
-def generate_api_response(response_code, body):
-    """Return a properly formatted API response."""
-    api_response = {
-        "isBase64Encoded": False,
-        "statusCode": response_code,
-        "headers": { "Content-Type": "application/json"},
-        "body": body
-    }
-    return api_response
-
-
-def sanitize_endpoint_input(endpoint):
-    """Sanitize endpoint and return SNS protocol."""
-    endpoint = ('').join(re.split(r'\-|\(|\)|\s', endpoint))
-    try:
-        endpoint = str(int(endpoint))
-    except ValueError:
-        return None, None
-
-    if(len(endpoint) == 10):
-        endpoint = '1' + endpoint
-
-    if(len(endpoint) == 11 and endpoint[0] == '1'):
-        return endpoint, 'sms'
-    
-    return None, None
 
 
 ## HANDLER FUNCTION ##

@@ -16,7 +16,7 @@ database stream, this function will do one of several things:
 
 Author:  Jacob F. Grant
 Created: 08/30/18
-Updated: 09/07/18
+Updated: 09/09/18
 """
 
 
@@ -26,11 +26,15 @@ import boto3
 from botocore.exceptions import ClientError
 
 
+# Environmental Variables
+
 try:
     TOPIC_ARN = os.environ['topic_arn']
 except KeyError as e:
     print("Warning: Environmental variable " + str(e) + " not defined")
 
+
+# Client Objects
 
 sns = boto3.client('sns', region_name='us-east-1')
 
